@@ -3,6 +3,7 @@ const http = require('http')
 const {Server} = require('socket.io')
 const dotenv = require('dotenv')
 const server = http.createServer(app);
+const mongoose = require('mongoose')
 const io = new Server(server)
 
 dotenv.config({path: './config.env'})
@@ -15,6 +16,14 @@ io.on('connection' , (socket) => {
         console.log('message:' + msg);
         socket.broadcast.emit('chat message', msg);
     })
+})
+
+const  DB = process.env.DATABASE_LOCAL
+
+mongoose.connect(DB, {
+    
+}).then(() => {
+    console.log('database connected')
 })
 const PORT = 3000;
 

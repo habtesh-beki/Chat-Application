@@ -1,0 +1,65 @@
+body{
+    background-color: rgb(57, 83, 83);
+}
+.Container{
+    margin-top: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Container-all{
+    width: 25%;
+    height: 60vh;
+    border-radius: 10px;
+    background-color: rgb(174, 174, 175);
+}
+.header{
+    margin: 1.3rem 0 1rem 35%;
+    color: rgb(35, 43, 163);
+    font-size: 2rem;
+}
+.inputs{
+    margin-left: 2rem;
+}
+.input{
+    margin: 2rem;
+}
+input{
+    height: 2.3rem;
+    width: 70%;
+    outline: none;
+    border-radius: 10px;
+    background-color: rgb(255, 253, 253);
+    border: 1px solid white;
+    color: rgb(49, 48, 48);
+}
+.img{
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    margin-right: 1rem;
+}
+.forget-password{
+    font-size: 1.3rem;
+    margin-left: 30%;
+    color: rgb(61, 63, 170);
+    cursor: pointer;
+}
+.submit{
+    width: 7rem;
+    height: 2.3rem;
+    background-color: blue;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    outline: none;
+    margin: 1.3rem;
+    border: none;
+}
+.submit-btn{
+    margin-left: 10%;
+}
+.gray{
+    background-color: gainsboro;
+    color: rgb(34, 28, 28);
+}
