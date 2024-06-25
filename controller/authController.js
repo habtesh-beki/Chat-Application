@@ -1,15 +1,23 @@
 const JWT = require('jsonwebtoken');
 const User = require('../models/userModel'); 
 
-const { JWT_SECRET_KEY, JWT_EXPIRED_IN } = process.env;
-
 const createToken = (id) => {
-  return JWT.sign({ id }, JWT_SECRET_KEY, {
-    expiresIn: JWT_EXPIRED_IN,
-  });
+  const secretKey = process.env.JWT_SECRET_KEY;
+  const expiresIn = process.env.JWT_EXPIRED_IN;
+
+  if (!secretKey) {
+    throw new Error('JWT_SECRET_KEY must be defined');
+  }
+
+  if (!expiresIn) {
+    throw new Error('JWT_EXPIRED_IN must be defined');
+  }
+
+  return JWT.sign({ id }, secretKey, { expiresIn });
 };
 
 exports.signup = async (req, res) => {
+
   try {
     const newUser = await User.create({
       name: req.body.name,
@@ -19,7 +27,7 @@ exports.signup = async (req, res) => {
     });
 
 const token = createToken(newUser._id);
-  console.log(req.body.name)
+
     res.status(201).json({
       status: 'success',
       token,
@@ -35,23 +43,41 @@ const token = createToken(newUser._id);
   }
 };
 
-exports.login = async(req,res) => {
-    try{
-      const currentUser =await User.find(req.body);
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
 
-     const token = createToken(currentUser._id)
-
-     res.status(200).json({
-        status:'success',
-        token,
-        data:{
-            currentUser
-        }
-     })
-    }catch{
-        res.status(404).json({
-            status:'fail',
-            message:error.message
-        }) 
+  try {
+    
+    if (!email || !password) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Please provide email and password'
+      });
     }
+
+    const user = await User.findOne({ email }).select('+password');
+    console.log(password === user.password)
+    
+    if (!user ||  password !== user.password) {
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Incorrect email or password'
+      });
+    }
+
+    const token = createToken(user._id);
+
+    return res.status(200).json({
+      status: 'success',
+      token,
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
 };

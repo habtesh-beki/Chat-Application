@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 const io = new Server(server)
 
 dotenv.config({path: './config.env'})
+
 io.on('connection' , (socket) => {
     console.log('user connected')
     socket.on('disconnect', () => {
@@ -25,7 +26,8 @@ mongoose.connect(DB, {
 }).then(() => {
     console.log('database connected')
 })
-const PORT = 3000;
+
+const PORT = process.env.PORT;
 
 server.listen(PORT, () => {
     console.log('server is listening on the port 3000')
